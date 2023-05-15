@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title> Earth around Moon </title>
+        </head>
+        <body>
+<script type="module">
+import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js';
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+const geometry = new THREE.BoxGeometry(1000,1000,1000);
+const geometry2 = new THREE.SphereGeometry(2,50,50);
+const geometry3 = new THREE.SphereGeometry(4,50,50);
+const cubeMaterials = [
+	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/cube/MilkyWay/dark-s_px.jpg'),side: THREE.DoubleSide}),
+	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/cube/MilkyWay/dark-s_nx.jpg'),side: THREE.DoubleSide}),
+	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/cube/MilkyWay/dark-s_py.jpg'),side: THREE.DoubleSide}),
+	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/cube/MilkyWay/dark-s_ny.jpg'),side: THREE.DoubleSide}),
+	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/cube/MilkyWay/dark-s_pz.jpg'),side: THREE.DoubleSide}),
+	new THREE.MeshBasicMaterial({map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/cube/MilkyWay/dark-s_nz.jpg'),side: THREE.DoubleSide}),
+	
+];
+const material = new THREE.MeshFaceMaterial( cubeMaterials );
+const material2 = new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/moon_1024.jpg'),side: THREE.DoubleSide} );
+const material3 = new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg'),side: THREE.DoubleSide} );
+const cube = new THREE.Mesh( geometry, material );
+const moon = new THREE.Mesh( geometry2, material2 );
+const earth = new THREE.Mesh( geometry3, material3 );
+moon.position.x += 10
+scene.add( cube );
+scene.add( moon );
+scene.add( earth );
+
+const controls = new OrbitControls( camera, renderer.domElement );
+camera.position.z = 20;
+let tmp = 0.01;
+function animate() {
+	requestAnimationFrame( animate );
+	moon.position.x = Math.cos(tmp)*10
+	moon.position.z = Math.sin(tmp)*10
+	earth.rotation.y += 0.02
+	controls.update();
+	renderer.render( scene, camera );
+	tmp -= 0.004;
+}
+animate();
+    window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize(){
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+</script>
+        </body>
+        </html>
